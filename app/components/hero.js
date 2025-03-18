@@ -17,6 +17,7 @@ export default function Hero() {
   const [mobileNo, setMobileNo] = useState('');
   const [Address, setAddress] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState(null);
 
   const calculateTotal = () => {
     const sum = Object.entries(denominations).reduce((acc, [denomination, count]) => acc + denomination * count, 0);
@@ -35,7 +36,7 @@ export default function Hero() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await axios.post(`http://localhost:5001/api/receipt`, {
+      const response = await axios.post(`http://localhost:5001/api/receipt`, {
         volunteerName,
         donorName,
         donorPAN,
@@ -45,11 +46,16 @@ export default function Hero() {
         mobileNo,
         Address
       });
-      toast.success('Receipt Generated and Sent!');
-      resetForm();
+  
+      if (response.data.pdfUrl) {
+        setPdfUrl(response.data.pdfUrl);
+        toast.success('Receipt Generated! Click Download.');
+      } else {
+        toast.error('Error generating receipt.');
+      }
     } catch (error) {
-      console.error('Error generating receipt:', error);
-      toast.error('Error generating receipt!');
+      console.error('Error:', error);
+      toast.error('Failed to generate receipt.');
     } finally {
       setIsLoading(false);
     }
@@ -141,6 +147,17 @@ export default function Hero() {
           </button>
         </div>
       </form>
+      {pdfUrl && (
+  <div className="mt-4 text-center">
+    <a
+      href={pdfUrl}
+      download
+      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+    >
+      Download PDF
+    </a>
+  </div>
+)}
     </div>
   );
 }
