@@ -151,13 +151,23 @@ export default function Hero() {
         </div>
         {pdfUrl && (
   <div className="mt-4 text-center">
-    <a
-      href={pdfUrl}
-      download
+    <button
+      onClick={() => {
+        // Open in a new tab for viewing
+        window.open(pdfUrl, '_blank');
+
+        // Trigger download
+        const link = document.createElement('a');
+        link.href = `http://localhost:5001/api/download/${pdfUrl.split('/').pop()}`;
+        link.download = pdfUrl.split('/').pop(); // Ensure file has the correct name
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }}
       className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
     >
-      Download PDF
-    </a>
+      View & Download PDF
+    </button>
   </div>
 )}
       </form>
