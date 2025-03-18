@@ -3,6 +3,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Image from 'next/image';
+import src from "@/public/images/NMF.png"
 
 export default function Hero() {
   const [volunteerName, setVolunteerName] = useState('');
@@ -77,14 +79,15 @@ export default function Hero() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Donation Calculator</h2>
+        <Image height={120} className='mx-auto' alt='image' src={src}/>
+        <h2 className="text-2xl font-bold mb-6 text-center">Sadaqah-e-Jaariya Box Receipt</h2>
 
         <InputField label="Volunteer Name" value={volunteerName} onChange={setVolunteerName} />
         <InputField label="Donor Name" value={donorName} onChange={setDonorName} />
-        <InputField label="Donor PAN" value={donorPAN} onChange={setDonorPAN} />
-        <InputField label="Email" value={email} onChange={setEmail} type="" />
+        {/* <InputField label="Donor PAN" value={donorPAN} onChange={setDonorPAN} />
+        <InputField label="Email" value={email} onChange={setEmail} type="" /> */}
         <InputField label="Mobile Number" value={mobileNo} onChange={setMobileNo} type="tel" pattern="[0-9]{10}" />
-        <InputField label="Address" value={Address} onChange={setAddress} />
+        {/* <InputField label="Address" value={Address} onChange={setAddress} /> */}
 
         <h3 className="text-lg font-semibold mb-4">Denominations</h3>
         <div className="grid grid-cols-2 gap-4">
@@ -146,8 +149,7 @@ export default function Hero() {
             {isLoading ? 'Generating...' : 'Generate and Send Receipt'}
           </button>
         </div>
-      </form>
-      {pdfUrl && (
+        {pdfUrl && (
   <div className="mt-4 text-center">
     <a
       href={pdfUrl}
@@ -158,6 +160,8 @@ export default function Hero() {
     </a>
   </div>
 )}
+      </form>
+      
     </div>
   );
 }
